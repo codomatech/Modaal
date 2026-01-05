@@ -1,19 +1,17 @@
-<img src="http://humaan.com/modaal/demo/social-share-modaal.png" />
-
 ***
 
-- Version 0.4.4
-- Requires jQuery 1.11.2 or higher (v2 not tested, v3 works but not extensively stress tested).
-- Built by [Humaan](http://www.humaan.com)
+- Based on version 0.4.4 from the [original repository by Humaan](https://github.com/humaan/Modaal)
+- Dependency-free! Runs on modern Javascript. jQuery is not needed.
+- API-only. Support for markup with data attributes was removed.
+- Originally built by [Humaan](http://www.humaan.com)
+- Built by [Humaan](https://www.humaan.com)
+- Made dependency-free by [Codoma.tech](https://www.codoma.tech/)
 
 ***
 
 # Modaal
 Modaal is a WCAG 2.0 Level AA accessible modal window plugin.
 
-
-## Demos
-[View Modaal Demos](http://humaan.com/modaal)
 
 
 # Another modal plugin? why?
@@ -23,24 +21,13 @@ It's hard to find a plugin with the right mix of quality, flexibility and access
 
 ## 1. Getting Setup
 
-#### 1.1. Installation
-
-- [Download ZIP](https://github.com/humaan/Modaal/archive/master.zip)
-- First, copy and paste `js/modaal.min.js` in your project, and link to it before the closing `</body>` element.
-- Next, you'll need to copy and paste the plugin's css into your project. We include both a SASS file and CSS file for flexibility.
-- Lastly, link to your new `modaal.css` file before the closing `</head>` element.
-
-Note: This plugin requires your website or application already runs a copy of [jQuery](http://jquery.com/), version 1.11.2 or higher. Currently version 2 has not been tested. Version 3 works but has not been stress tested for bugs/issues.
-
-
-#### 1.2. Installation with Package Managers
+#### 1.1. Installation with Package Managers
 
 Modaal is now setup and ready to be used with [Bower](https://bower.io/) and [NPM](https://www.npmjs.com/package/modaal) and can be installed using the following commands.
 
 ```shell
-bower install  modaal
 
-npm install  modaal
+npm install  @cdtech/modaal
 ```
 
 #### 1.3 Installation with CDN
@@ -52,28 +39,65 @@ Modaal is now setup and ready to be used with CDN [JSDelivr](http://www.jsdelivr
 
 Out of the box Modaal is setup to work using inline content using as little customisation as possible. The first thing you'll require is a link to trigger the modal window. It's recommended that your `href` attribute targets a unique ID for a hidden element on the page containing your modal content. Like so:
 
-```html
-<a href="#inline" class="inline">Show</a>
-<div id="inline" style="display:none;">
-	<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
-</div>
-```
 ```js
-$('.inline').modaal();
-```
-
-If you would prefer your trigger element is _not_ an `<a href="#">`, you can define a `content_source` value like so:
-
-```html
-<button class="inline">Show</button>
-<div id="inline" style="display:none;">
-	<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
-</div>
-```
-```js
-$('.inline').modaal({
-	content_source: '#inline'
+// 1. Create a basic inline modal
+const modal = new Modaal({
+  type: 'inline',
+  content_source: '#my-content'
 });
+
+// Open it
+modal.open();
+
+// Close it programmatically
+modal.close();
+
+
+// 1.1 inline modals can also take the content from a function ...
+
+// 1.1.1 returning HTML string
+
+const modal2 = new Modaal({
+  type: 'inline',
+  content_source: () => {
+    return `
+      <div>
+        <h2>Dynamic Content</h2>
+        <p>Generated at ${new Date().toLocaleString()}</p>
+      </div>
+    `;
+  }
+});
+
+// 1.1.2 or retruning DOM objects
+const modal3 = new Modaal({
+  type: 'inline',
+  content_source: () => {
+    const div = document.createElement('div');
+    div.innerHTML = '<h2>Created Element</h2>';
+    return div;
+  }
+});
+
+
+// 2. Confirm modal
+const confirmModal = new Modaal({
+  type: 'confirm',
+  confirm_title: 'Are you sure?',
+  confirm_content: '<p>This action cannot be undone.</p>',
+  confirm_callback: function() {
+    console.log('Confirmed!');
+  }
+});
+confirmModal.open();
+
+// 3. AJAX modal
+const ajaxModal = new Modaal({
+  type: 'ajax',
+  content_source: '/path/to/content.html'
+});
+ajaxModal.open();
+
 ```
 
 
@@ -81,7 +105,7 @@ $('.inline').modaal({
 
 #### 2.1. Practical Example
 ```js
-$('.my-link').modaal({
+const modal = new Modaal({
 	type: 'ajax',
 	loading_content: 'Loading content, please wait.'
 });
@@ -121,25 +145,7 @@ loading_class|`string`|`is_loading`||Class name to be applied while content is l
 ajax_error_class|`string`|`modaal-error`||Class name to be applied when content has failed to load. Default is ''
 instagram_id|`string`|`null`||Unique photo ID for an Instagram photo.
 
-#### 2.3. Inline Attribute Configuration
-Modaal has been developed to support common jQuery configuration options, but in an effort to extend functionality and widen its usage we've developed support for inline `data-option-name` attribute support.
-
-To enable this, the Modaal trigger link must have a class of `modaal`, then you can add attributes to the link as needed like so:
-
-```html
-<a href="#inline" data-modaal-type="inline" data-modaal-animation="fade" class="modaal">Show</a>
-```
-
-Or for non `<a href="#">` elements:
-
-```html
-<button data-modaal-content-source="#inline" data-modaal-type="inline" data-modaal-animation="fade" class="modaal">Show</button>
-```
-
-It's important to note, that configuration options that contain an underscore (`_`) in them need to be replaced with a hyphen (`-`) in it's respective html attribute. For example, `overlay_opacity` configuration would read `data-overlay-opacity="0.8"`.
-
-
-#### 2.4. Configuration Events
+#### 2.3. Configuration Events
 event | params | notes
 ------|--------|-------
 before_open|`event`|Executed before the modaal has revealed
@@ -154,7 +160,7 @@ source||Callback function executed on the default source, it is intended to tran
 ajax_success|`target`|Callback for when AJAX content is loaded in
 
 
-###### 2.4.1 Working With Events
+###### 2.3.1 Working With Events
 There are two approaches to using events. The first is to call the entire `function() { }` in where the event configuration is set as seen below in `before_open`, and the second is to reference only the JS function name where the rest of the action occurs, as seen below in `after_open`.
 ```js
 $('.my-link').modaal({
@@ -170,99 +176,25 @@ function myFunction() {
 ```
 
 
-## 3. Methods
+## 3. Tips & Tricks
 
-
-#### 3.1. Programatically Creating Modaals
-To initialise a programatically created Modaal, but not open, it can been called like any other doc ready instance, with 
-```js
-$('.my-link').modaal();
-```
-
-Or with any options as available:
-```js
-$('.my-link').modaal({
-	type: 'ajax',
-	loading_content: 'Loading content, please wait.'
-});
-```
-
-
-#### 3.2. Programatically Open a Modaal
-For any modaal instance that has already been initialised, it can be triggered to open with
-```js
-$('.my-link').modaal('open');
-```
-
-If the modaal has been programatically created and needs to open straight away, the following approach can be used to initialise _and_ open immediately:
-```js
-$('.my-link').modaal({ start_open: true });
-```
-This approach allows you to define other options that may be required as well as open immediately once it's ready.
-
-
-#### 3.3. Programatically Close a Modaal
-Currently Modaal only supports a close method which can be called like so.
-```js
-$('.my-link').modaal('close');
-```
-Based on this example, we know we've already established (and opened) the modal associated to the `.my-link` class, so to close we use the same selector with a string of `close` instead of options;
-
-
-
-## 4. Tips & Tricks
-
-#### 4.1. Avoiding Conflicts
+#### 3.1. Avoiding Conflicts
 Through development, we've worked hard to ensure no conflicts will occur with any existing code, however it's important to note some of the classes currently in use and best to avoid in your own stylesheet. These include:
 
 `modaal-inline`, `modaal-ajax`, `modaal-image`, `modaal-confirm`, `modaal-iframe`, `modaal-video`, `modaal-wrapper`, `modaal-outer-wrapper`, `modaal-inner-wrapper`, `modaal-container`, `modaal-close`, `modaal-content`
 
-#### 4.2. Customising the CSS
+#### 3.2. Customising the CSS
 We wanted to provide users the chance to really extend on Modaal's base through customising the modal styles to meet their own project. We understand working with various projects and differing styles how important it is to tailor the aesthetics right down to even the most minute detail.
 
 Provided in the distribution files are both un-minified css and SASS files to best integrate with your workflow. Within the SASS file you'll find a number of variables located at the top of the document for which you can tweak as desired.
 
 It's our recommendation, should you wish to change any styling, that you minify your final output so as to save on overall page weight. The primary recommendation would be to run the `gulp dist` task which will minify the CSS (and JS if changes have been made), with another alternative to be found at [cssminifier.com](http://cssminifier.com/).
 
-#### 4.3. Video file URLs
+#### 3.3. Video file URLs
 The Modaal video type has been tested thoroughly using both Vimeo and Youtube. For best outcome, please ensure the url format looks like the one of the following below. We transplant this URL into an iframe which then each service provider controls all the necessary play back from there.
 
-###### 4.3.1. Youtube
+###### 3.3.1. Youtube
 `https://www.youtube.com/embed/cBJyo0tgLnw` where the ID at the end is your unique video id. This can be found by selecting 'Share' on a youtube video, then clicking on 'Embed'. You'll find this URL within the content presented.
 
-###### 4.3.1. Vimeo
+###### 3.3.1. Vimeo
 `https://player.vimeo.com/video/109626219` where the ID at the end is your unique video id. This can be found by selecting 'Share' on a vimeo video (commonly seen on the right hand side), and by selecting the content within 'Embed'. You'll find the URL necessary towards the very beginning of that embed code inside `src=""`.
-
-
-## 5. Reporting issues and contributing code
-#### 5.1. Reporting an issue
-
-1. Please ensure the issue you're reporting is reproducible in a standalone environment, and not a result of something in your own build.
-2. Use [jsFiddle](http://jsfiddle.net) or [jsBin](http://jsbin.com) to provide a test page showing issue.
-3. In your issue, please indicate which *browser*, *operating system* and *os version* you're using.
-4. Please also indicate plugin version.
-5. If you have made any alterations to the plugin files (JS or CSS), please also list and include code samples.
-
-*The more information you can provide regarding an issue, the better.*
-
-#### 5.2. Contributing to the plugin
-Thanks for your contribution! Please refer to the guidelines below.
-
-1. Please ensure the issue you're reporting is reproducible in a standalone environment, and not a result of something in your own build.
-2. Please ensure your pull request has a base branch of `develop` selected. pull request's with base `master` will not be accepted.
-3. Please ensure the problem you're resolving has an open issue ticket.
-4. Adhere to the current style and formatting of the plugin files, including CSS, SASS and JS.
-5. Please ensure any changes are tested thoroughly in multiple browsers. We will do this, but if we locate bugs in the new code, the pull request will not be accepted.
-6. Outline all changes in your commit message and also reference the issue ticket. For example "Contribution: Fix for issue #17 - Update to XYZ file to do make it do ABC"
-
-#### 5.3. Development Setup
-1. Ensure you're running [NodeJS](http://nodejs.org/)
-2. Install Gulp by running `npm install --global gulp`. More details are available through the [Gulp documentation](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md).
-3. Install the NPM dependencies by running `npm install`. (if this throws an error, try `sudo` the command).
-4. The build can now be called by running `gulp watch` to watch for SASS updates.
-5. When you're happy with the final output, please also run `gulp dist` to minify and compress changes.
-
-
-## License
-Copyright © [Humaan](http://humaan.com)
-Licensed under the MIT license.

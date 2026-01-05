@@ -7,6 +7,8 @@
 // Modaal Variables
 // --------------------------------------------------------
 
+@use "sass:color";
+
 $modaal-overlay-color: rgba(0,0,0, 0.8);
 
 $modaal-radius: 0px; //5px
@@ -231,14 +233,14 @@ $modaal-grey: #afb7bc;
 		border-radius: 3px;
 		@include modaal-transition(background);
 		&:hover {
-			background: darken($modaal-primary, 15%);
+			background: color.adjust($modaal-primary, $lightness: -15%); /*darken($modaal-primary, 15%);*/
 		}
 	}
 	&.modaal-cancel {
 		text-decoration: underline;
 		&:hover {
 			text-decoration: none;
-			color: darken($modaal-primary, 15%);
+			color: color.adjust($modaal-primary, $lightness: -15%);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-	sass = require('gulp-sass'),
+	sass = require('gulp-sass')(require('sass')),
 	autoprefixer = require('gulp-autoprefixer'),
 	uglify = require('gulp-uglify'),
 	rename = require('gulp-rename'),
@@ -13,18 +13,17 @@ var gulp = require('gulp'),
 // ----------------------------------------------------------------------
 
 gulp.task('styles', function() {
-	gulp.src('source/css/modaal.scss')
+	return gulp.src('source/css/modaal.scss')
 		.pipe(sass({
-			style: 'expanded',
-			sourcemap: false
+			outputStyle: 'expanded'
 		})
 			.on('error', sass.logError))
 		.pipe(autoprefixer({
-	        browsers: 'last 3 versions, Explorer > 8, android 4'
-        }))
-        .pipe(mmq({
-            log: true
-        }))
+			overrideBrowserslist: ['last 3 versions', 'Explorer > 8', 'android 4']
+		}))
+		.pipe(mmq({
+			log: true
+		}))
 		.pipe(gulp.dest('source/css'))
 		.pipe(notify({
 			message: 'Modaal styles task complete'
@@ -33,14 +32,13 @@ gulp.task('styles', function() {
 
 // For demo website only, can be removed
 gulp.task('demo-styles', function() {
-	gulp.src('demo/css/demo.scss')
+	return gulp.src('demo/css/demo.scss')
 		.pipe(sass({
-			style: 'expanded',
-			sourcemap: false
+			outputStyle: 'expanded'
 		})
 			.on('error', sass.logError))
 		.pipe(autoprefixer({
-			browsers: ['last 2 version', 'ie 8', 'ie 9']
+			overrideBrowserslist: ['last 2 version', 'ie 8', 'ie 9']
 		}))
 		.pipe(gulp.dest('demo/css'))
 		.pipe(notify({
@@ -49,8 +47,8 @@ gulp.task('demo-styles', function() {
 });
 
 gulp.task('watch', function() {
-	gulp.watch('source/css/*.scss', ['styles']);
-	gulp.watch('demo/css/*.scss', ['demo-styles']);
+	gulp.watch('source/css/*.scss', gulp.series('styles'));
+	gulp.watch('demo/css/*.scss', gulp.series('demo-styles'));
 });
 
 
@@ -59,9 +57,12 @@ gulp.task('watch', function() {
 // ----------------------------------------------------------------------
 
 gulp.task('min-modaal', function() {
+	// Minify JS
 	gulp.src(['source/js/modaal.js'])
 		.pipe(uglify({
-			preserveComments: 'some'
+			output: {
+				comments: /^!/
+			}
 		}))
 		.pipe(rename({
 			suffix: '.min',
@@ -72,7 +73,8 @@ gulp.task('min-modaal', function() {
 			message: 'Successfully uglified Modaal.'
 		}));
 
-	gulp.src(['source/css/*.css'])
+	// Minify CSS
+	return gulp.src(['source/css/*.css'])
 		.pipe(cleanCSS({compatibility: 'ie9'}))
 		.pipe(rename({
 			extname : '.min.css'
@@ -82,19 +84,24 @@ gulp.task('min-modaal', function() {
 });
 
 gulp.task('copy-to-dist', function() {
-	// copy other files to dist folder
+	// copy JS
 	gulp.src('source/js/modaal.js')
 		.pipe(gulp.dest('dist/js/'));
 
+	// copy SCSS
 	gulp.src('source/css/modaal.scss')
 		.pipe(gulp.dest('dist/css/'));
 
-	gulp.src('source/css/modaal.css')
+	// copy CSS
+	return gulp.src('source/css/modaal.css')
 		.pipe(gulp.dest('dist/css/'))
 		.pipe(notify({
 			message: 'Moved to dist.'
 		}));
 });
 
-// Now run in order
-gulp.task('dist', ['min-modaal', 'copy-to-dist']);
+// Now run in order (Gulp 4 syntax)
+gulp.task('dist', gulp.series('min-modaal', 'copy-to-dist'));
+
+// Default task
+gulp.task('default', gulp.series('styles'));

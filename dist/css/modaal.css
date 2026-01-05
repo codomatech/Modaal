@@ -39,6 +39,7 @@
 	z-index: 9999;
 	overflow: auto;
 	opacity: 1;
+	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	-webkit-overflow-scrolling: touch;
 	-webkit-transition: all 0.3s ease-in-out;
@@ -46,6 +47,7 @@
 }
 
 .modaal-wrapper * {
+	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -113,6 +115,7 @@
 	max-width: 1000px;
 	border-radius: 0px;
 	background: #fff;
+	-webkit-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 	cursor: auto;
 }
@@ -231,7 +234,7 @@
 }
 
 .modaal-confirm-btn.modaal-ok:hover {
-	background: #2f2f2f;
+	background: rgb(46.75, 46.75, 46.75); /*darken($modaal-primary, 15%);*/
 }
 
 .modaal-confirm-btn.modaal-cancel {
@@ -240,12 +243,13 @@
 
 .modaal-confirm-btn.modaal-cancel:hover {
 	text-decoration: none;
-	color: #2f2f2f;
+	color: rgb(46.75, 46.75, 46.75);
 }
 
 .modaal-instagram .modaal-container {
 	width: auto;
 	background: transparent;
+	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
 }
 
@@ -266,6 +270,7 @@
 	border-radius: 0 !important;
 	width: 1000px !important;
 	max-width: 800px !important;
+	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
 	-webkit-animation: instaReveal 1s linear forwards;
 	animation: instaReveal 1s linear forwards;
@@ -436,6 +441,7 @@
 	height: 0;
 	overflow: hidden;
 	max-width: 100%;
+	-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 	background: #000;
 	max-width: 1300px;
@@ -516,8 +522,8 @@
 .modaal-loading-spinner > div:nth-of-type(2) > div {
 	-webkit-animation: modaal-loading-spinner 1s linear infinite;
 	animation: modaal-loading-spinner 1s linear infinite;
-	-webkit-animation-delay: .12s;
-	animation-delay: .12s;
+	-webkit-animation-delay: 0.12s;
+	animation-delay: 0.12s;
 }
 
 .modaal-loading-spinner > div:nth-of-type(2) {
@@ -529,8 +535,8 @@
 .modaal-loading-spinner > div:nth-of-type(3) > div {
 	-webkit-animation: modaal-loading-spinner 1s linear infinite;
 	animation: modaal-loading-spinner 1s linear infinite;
-	-webkit-animation-delay: .25s;
-	animation-delay: .25s;
+	-webkit-animation-delay: 0.25s;
+	animation-delay: 0.25s;
 }
 
 .modaal-loading-spinner > div:nth-of-type(4) > div,
@@ -550,8 +556,8 @@
 .modaal-loading-spinner > div:nth-of-type(4) > div {
 	-webkit-animation: modaal-loading-spinner 1s linear infinite;
 	animation: modaal-loading-spinner 1s linear infinite;
-	-webkit-animation-delay: .37s;
-	animation-delay: .37s;
+	-webkit-animation-delay: 0.37s;
+	animation-delay: 0.37s;
 }
 
 .modaal-loading-spinner > div:nth-of-type(4) {
@@ -563,8 +569,8 @@
 .modaal-loading-spinner > div:nth-of-type(5) > div {
 	-webkit-animation: modaal-loading-spinner 1s linear infinite;
 	animation: modaal-loading-spinner 1s linear infinite;
-	-webkit-animation-delay: .5s;
-	animation-delay: .5s;
+	-webkit-animation-delay: 0.5s;
+	animation-delay: 0.5s;
 }
 
 .modaal-loading-spinner > div:nth-of-type(6) > div,
@@ -584,8 +590,8 @@
 .modaal-loading-spinner > div:nth-of-type(6) > div {
 	-webkit-animation: modaal-loading-spinner 1s linear infinite;
 	animation: modaal-loading-spinner 1s linear infinite;
-	-webkit-animation-delay: .62s;
-	animation-delay: .62s;
+	-webkit-animation-delay: 0.62s;
+	animation-delay: 0.62s;
 }
 
 .modaal-loading-spinner > div:nth-of-type(6) {
@@ -597,8 +603,8 @@
 .modaal-loading-spinner > div:nth-of-type(7) > div {
 	-webkit-animation: modaal-loading-spinner 1s linear infinite;
 	animation: modaal-loading-spinner 1s linear infinite;
-	-webkit-animation-delay: .75s;
-	animation-delay: .75s;
+	-webkit-animation-delay: 0.75s;
+	animation-delay: 0.75s;
 }
 
 .modaal-loading-spinner > div:nth-of-type(7) {
@@ -610,8 +616,8 @@
 .modaal-loading-spinner > div:nth-of-type(8) > div {
 	-webkit-animation: modaal-loading-spinner 1s linear infinite;
 	animation: modaal-loading-spinner 1s linear infinite;
-	-webkit-animation-delay: .87s;
-	animation-delay: .87s;
+	-webkit-animation-delay: 0.87s;
+	animation-delay: 0.87s;
 }
 
 .modaal-loading-spinner > div:nth-of-type(8) {
@@ -754,7 +760,7 @@
 }
 
 100% {
-	opacity: .1;
+	opacity: 0.1;
 	-ms-transform: scale(1);
 	-webkit-transform: scale(1);
 	transform: scale(1);
@@ -772,7 +778,7 @@
 }
 
 100% {
-	opacity: .1;
+	opacity: 0.1;
 	-ms-transform: scale(1);
 	-webkit-transform: scale(1);
 	transform: scale(1);
