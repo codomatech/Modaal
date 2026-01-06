@@ -4,8 +4,7 @@
 - Dependency-free! Runs on modern Javascript. jQuery is not needed.
 - API-only. Support for markup with data attributes was removed.
 - Originally built by [Humaan](http://www.humaan.com)
-- Built by [Humaan](https://www.humaan.com)
-- Made dependency-free by [Codoma.tech](https://www.codoma.tech/)
+- Updated & made dependency free by [Codoma.tech](https://www.codoma.tech/)
 
 ***
 
