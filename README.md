@@ -27,7 +27,7 @@ Modaal is now setup and ready to be used with [Bower](https://bower.io/) and [NP
 
 ```shell
 
-npm install  @cdtech/modaal
+npm i @codomatech/modaal
 ```
 
 #### 1.3 Installation with CDN
